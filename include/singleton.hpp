@@ -1,67 +1,70 @@
 #pragma once
 
-#include "memleaks.hpp"
+#include <memory>
 
 namespace Utils
 {
 	/**
 	 * Creating a Singleton class.
-	 * ---------------------------
 	 * 
 	 * @code
-	 *	class MySingleton : public Singleton<MySingleton>
-	 *	{
-	 *		friend class Singleton<MySingleton>;
-	 *	
-	 *	private:
-	 *		MySingleton() {}
-	 *	};
-	 * @endcode
+	 * class T : public Singleton<T>
+	 * {
+	 *		friend class Singleton<T>;
 	 * 
-	 * ---------------------------
-	 * Don't forget to call destroy() at the end of program to destory the instance.
+	 * private:
+	 * 		T() = default;
+	 * 
+	 * public:
+	 * 		static void foo()
+	 * 		{
+	 * 			T& t = getInstance();
+	 * 		}
+	 * };
+	 * @endcode
 	 */
 	template<class T>
 	class Singleton
 	{
 	private:
-		static T* instance;
+		static std::unique_ptr<T> instance;
 
-	public:
+	protected:
+		Singleton() = default;
+
 		/**
 		 * Get the unique instance.
 		 * 
 		 * @return 
 		 */
-		static inline T* getInstance();
+		static inline T& getInstance();
 
+	public:
 		/**
-		 * Destroy the singleton instance.
-		 * Call this function at the end of program.
-		 * 
+		 * No copy constructor.
 		 */
-		static void destroy();
+		Singleton(const T& t) = delete;
+		/**
+		 * No copy constructor.
+		 */
+		Singleton(const Singleton& s) = delete;
 
 		/**
-		 * Cannot create any singleton object.
-		 * 
-		 * @param s
+		 * No assignment.
+		 */
+		void operator=(const T& t) = delete;
+		/**
+		 * No assignment.
 		 */
 		void operator=(const Singleton& s) = delete;
 	};
 }
 
 template<class T>
-T* Utils::Singleton<T>::instance = new T;
+std::unique_ptr<T> Utils::Singleton<T>::instance(new T());
 
 template<class T>
-inline T* Utils::Singleton<T>::getInstance()
+inline T& Utils::Singleton<T>::getInstance()
 {
-	return instance;
-}
-
-template<class T>
-inline void Utils::Singleton<T>::destroy()
-{
-	delete instance;
+	return *instance.get();
 }
