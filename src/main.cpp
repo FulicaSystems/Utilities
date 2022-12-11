@@ -3,6 +3,7 @@
 #include "utils/memleaks.hpp"
 
 #include "mathematics.hpp"
+#include "utils/property.hpp"
 
 int main()
 {
@@ -16,6 +17,12 @@ int main()
 
 	std::cout << d << std::endl;
 
-	getchar();
+	Property<int> a(
+		[]() -> const int& { return 1; },
+		[](const int& i) { std::cout << "setting" << std::endl; }
+	);
+	a = 5;
+	std::cout << a << std::endl;
+
 	return 0;
 }
