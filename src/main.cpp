@@ -23,13 +23,17 @@ int main()
 		int a;
 	public:
 		Property<int> p{
-			[]() -> const int& { return 1; },
-			[](const int& i) { std::cout << "setting to " << i << std::endl; }
+			[this]() -> const int& { return a; },
+			[this](const int& i) { a = i; }
+		};
+		Property<int> p2{
+			[this]() -> const int& { return a; },
+			nullptr
 		};
 	};
 
 	Test t;
-	t.p = 5;
+	t.p2 = 5;
 	std::cout << t.p << std::endl;
 
 	return 0;

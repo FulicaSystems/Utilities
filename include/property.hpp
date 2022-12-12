@@ -1,26 +1,30 @@
 #pragma once
 
+#include <functional>
+
 template<class TType>
 class Property
 {
 private:
-	const TType& (*userGet)();
-	void(*userSet)(const TType& t);
+	std::function<const TType& ()> userGet;
+	std::function<void(const TType& t)> userSet;
 
 public:
-	Property(const TType& (*getAccessor)(), void (*setAccessor)(const TType& t));
+	Property(std::function<const TType& ()> getAccessor,
+		std::function<void(const TType& t)> setAccessor);
 
 	// get accessor
-	const TType& get() const { if (userGet) return userGet(); throw std::exception("Get accessor not set"); }
+	const TType& get() const { assert(("Get accessor not set", userGet)); return userGet(); }
 	operator const TType& () const { return get(); }
 
 	// set accessor
-	void set(const TType& t) { if (userSet) userSet(t); else throw std::exception("Set accessor not set"); }
+	void set(const TType& t) { assert(("Set accessor not set", userSet)); userSet(t); }
 	void operator=(const TType& t) { set(t); }
 };
 
 template<class TType>
-inline Property<TType>::Property(const TType& (*getAccessor)(), void(*setAccessor)(const TType& t))
+inline Property<TType>::Property(std::function<const TType& ()> getAccessor,
+	std::function<void(const TType& t)> setAccessor)
 	: userGet(getAccessor), userSet(setAccessor)
 {
 }
