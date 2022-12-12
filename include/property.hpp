@@ -4,35 +4,23 @@ template<class TType>
 class Property
 {
 private:
-	TType buffer;
-
-	_declspec(property(get = get, put = set))
-	TType prop;
-
-	const TType& (*customGetter)();
-	void(*customSetter)(const TType& t);
+	const TType& (*userGet)();
+	void(*userSet)(const TType& t);
 
 public:
-	Property();
-	Property(const TType& (*getter)(), void (*setter)(const TType& t));
+	Property(const TType& (*getAccessor)(), void (*setAccessor)(const TType& t));
 
-	// get
-	const TType& get() const { return customGetter ? customGetter() : buffer; }
+	// get accessor
+	const TType& get() const { if (userGet) return userGet(); throw std::exception("Get accessor not set"); }
 	operator const TType& () const { return get(); }
 
-	// set
-	void set(const TType& t) { if (customSetter) customSetter(t); return; buffer = t; }
+	// set accessor
+	void set(const TType& t) { if (userSet) userSet(t); else throw std::exception("Set accessor not set"); }
 	void operator=(const TType& t) { set(t); }
 };
 
 template<class TType>
-inline Property<TType>::Property()
-	: buffer()
-{
-}
-
-template<class TType>
-inline Property<TType>::Property(const TType& (*getter)(), void(*setter)(const TType& t))
-	: buffer(), customGetter(getter), customSetter(setter)
+inline Property<TType>::Property(const TType& (*getAccessor)(), void(*setAccessor)(const TType& t))
+	: userGet(getAccessor), userSet(setAccessor)
 {
 }

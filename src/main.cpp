@@ -17,12 +17,20 @@ int main()
 
 	std::cout << d << std::endl;
 
-	Property<int> a(
-		[]() -> const int& { return 1; },
-		[](const int& i) { std::cout << "setting" << std::endl; }
-	);
-	a = 5;
-	std::cout << a << std::endl;
+	class Test
+	{
+	private:
+		int a;
+	public:
+		Property<int> p{
+			[]() -> const int& { return 1; },
+			[](const int& i) { std::cout << "setting to " << i << std::endl; }
+		};
+	};
+
+	Test t;
+	t.p = 5;
+	std::cout << t.p << std::endl;
 
 	return 0;
 }
