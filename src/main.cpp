@@ -5,6 +5,8 @@
 #include "mathematics.hpp"
 #include "utils/property.hpp"
 
+#include "utils/ai/neuralnetwork.hpp"
+
 int main()
 {
 	std::cout << "Hello world !" << std::endl;
@@ -22,11 +24,11 @@ int main()
 	private:
 		int a;
 	public:
-		Property<int> p{
+		Utils::Property<int> p{
 			[this]() -> const int& { return a; },
 			[this](const int& i) { a = i; }
 		};
-		Property<int> p2{
+		Utils::Property<int> p2{
 			[this]() -> const int& { return a; },
 			nullptr
 		};
@@ -35,6 +37,8 @@ int main()
 	Test t;
 	t.p2 = 5;
 	std::cout << t.p << std::endl;
+
+	Utils::AI::NeuralNetwork ann;
 
 	return 0;
 }
