@@ -54,9 +54,12 @@ int main()
 		Utils::AI::NeuralNetwork::MLPModel model;
 		//model.addLayer();
 
+		Utils::AI::Perceptron p1(2, Utils::AI::ActivationImpl::tanH);
+		Utils::AI::Perceptron p2(2, Utils::AI::ActivationImpl::tanH);
 		Utils::AI::Perceptron p3(2, Utils::AI::ActivationImpl::tanH);
-		Utils::AI::Perceptron p2(2, Utils::AI::ActivationImpl::tanH, &p3);
-		Utils::AI::Perceptron p1(2, Utils::AI::ActivationImpl::tanH, &p3);
+
+		p1.addNextPerceptron(&p3);
+		p2.addNextPerceptron(&p3);
 
 		p1.feed(0, 0.f);
 		p1.feed(1, 1.f);

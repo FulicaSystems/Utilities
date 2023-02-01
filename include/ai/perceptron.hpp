@@ -23,14 +23,23 @@ namespace Utils::AI
 		// activation function
 		ActivationPtr func;
 
-		Perceptron* nextP = nullptr;
+		std::vector<Perceptron*> nextPerceptrons;
 
 		float sum() const;
 
 	public:
-		Perceptron(int numInput, ActivationPtr func, Perceptron* nextPerceptron = nullptr);
+		Perceptron(int numInput, ActivationPtr func);
 
+		void addNextPerceptron(Perceptron* nextP);
+
+		/**
+		 * Set this perceptron's input value.
+		 */
 		void feed(int index, float input);
+
+		/**
+		 * Summum the inputs than go through activation function.
+		 */
 		float process(int selfIndex = 0) const;
 	};
 }
