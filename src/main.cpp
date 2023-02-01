@@ -5,7 +5,7 @@
 #include "mathematics.hpp"
 #include "utils/property.hpp"
 
-#include "utils/ai/neuralnetwork.hpp"
+#include "utils/ai/neuralnetwork/mlpnetwork.hpp"
 
 int main()
 {
@@ -44,25 +44,9 @@ int main()
 		//t.p2 = 5;
 	}
 
-	// artificial neural network
+	// artificial neural network (mlpn)
 	{
-		std::vector<float> inputs;
-		inputs.push_back(0);
-		inputs.push_back(0);
 
-		int hiddenLayerNum = 2;
-		int outputNum = 1;
-		Utils::AI::NeuralNetwork ann = { hiddenLayerNum, outputNum };
-
-		for (;;)
-		{
-			ann.feedForward(inputs);
-			std::vector<float> outputs = ann.getOutputs();
-
-			std::cout << outputs[0] << std::endl;
-
-			ann.backPropagation();
-		}
 	}
 
 	return 0;
