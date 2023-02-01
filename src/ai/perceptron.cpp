@@ -1,7 +1,7 @@
 #include "utils/ai/perceptron.hpp"
 
-Utils::AI::Perceptron::Perceptron(int numInput, ActivationPtr func)
-	: func(func)
+Utils::AI::Perceptron::Perceptron(int numInput, ActivationPtr func, Perceptron* nextPerceptron)
+	: func(func), nextP(nextPerceptron)
 {
 	inputs.resize(numInput);
 }
@@ -25,8 +25,8 @@ void Utils::AI::Perceptron::feed(int index, float input)
 float Utils::AI::Perceptron::process(int selfIndex) const
 {
 	float output = (*func)(sum());
-	if (nextPerceptron)
-		nextPerceptron->feed(selfIndex, output);
+	if (nextP)
+		nextP->feed(selfIndex, output);
 
 	return output;
 }

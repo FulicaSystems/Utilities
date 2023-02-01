@@ -4,7 +4,7 @@ namespace Utils::AI::NeuralNetwork
 {
 	// reinforcement learning
 	// Deep Q-Learning
-	class DQNetwork
+	class DQLModel
 	{
 	private:
 

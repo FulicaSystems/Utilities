@@ -23,12 +23,12 @@ namespace Utils::AI
 		// activation function
 		ActivationPtr func;
 
-		Perceptron* nextPerceptron = nullptr;
+		Perceptron* nextP = nullptr;
 
 		float sum() const;
 
 	public:
-		Perceptron(int numInput, ActivationPtr func);
+		Perceptron(int numInput, ActivationPtr func, Perceptron* nextPerceptron = nullptr);
 
 		void feed(int index, float input);
 		float process(int selfIndex = 0) const;

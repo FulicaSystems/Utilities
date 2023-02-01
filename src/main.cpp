@@ -7,7 +7,7 @@
 
 #include "utils/ai/perceptron.hpp"
 #include "utils/ai/activation.hpp"
-#include "utils/ai/neuralnetwork/mlpnetwork.hpp"
+#include "utils/ai/neuralnetwork/mlpmodel.hpp"
 
 int main()
 {
@@ -51,11 +51,20 @@ int main()
 		// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
 		srand(static_cast <unsigned> (time(0)));
 
-		Utils::AI::Perceptron perceptron(2, Utils::AI::ActivationImpl::tanH);
+		Utils::AI::NeuralNetwork::MLPModel model;
+		//model.addLayer();
 
-		perceptron.feed(0, 0.f);
-		perceptron.feed(1, 1.f);
-		std::cout << perceptron.process() << std::endl;
+		Utils::AI::Perceptron p3(2, Utils::AI::ActivationImpl::tanH);
+		Utils::AI::Perceptron p2(2, Utils::AI::ActivationImpl::tanH, &p3);
+		Utils::AI::Perceptron p1(2, Utils::AI::ActivationImpl::tanH, &p3);
+
+		p1.feed(0, 0.f);
+		p1.feed(1, 1.f);
+		p2.feed(0, 0.f);
+		p2.feed(1, 1.f);
+		p1.process(0);
+		p2.process(1);
+		std::cout << p3.process() << std::endl;
 	}
 
 	return 0;

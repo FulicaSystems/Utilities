@@ -4,7 +4,7 @@ namespace Utils::AI::NeuralNetwork
 {
 	// supervision learning
 	// Multi-layer perceptron network
-	class MLPNetwork
+	class MLPModel
 	{
 	private:
 
