@@ -5,6 +5,8 @@
 #include "mathematics.hpp"
 #include "utils/property.hpp"
 
+#include "utils/ai/perceptron.hpp"
+#include "utils/ai/activation.hpp"
 #include "utils/ai/neuralnetwork/mlpnetwork.hpp"
 
 int main()
@@ -46,7 +48,14 @@ int main()
 
 	// artificial neural network (mlpn)
 	{
+		// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
+		srand(static_cast <unsigned> (time(0)));
 
+		Utils::AI::Perceptron perceptron(2, Utils::AI::ActivationImpl::tanH);
+
+		perceptron.feed(0, 0.f);
+		perceptron.feed(1, 1.f);
+		std::cout << perceptron.process() << std::endl;
 	}
 
 	return 0;

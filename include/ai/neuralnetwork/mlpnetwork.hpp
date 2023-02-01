@@ -9,5 +9,6 @@ namespace Utils::AI::NeuralNetwork
 	private:
 
 	public:
+		void addLayer();
 	};
 }
