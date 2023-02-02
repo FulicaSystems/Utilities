@@ -28,6 +28,9 @@ namespace Utils::AI
 		float sum() const;
 
 	public:
+		// result of the perceptron after processing
+		float output = 0.f;
+
 		Perceptron(int numInput, ActivationPtr func);
 
 		void addNextPerceptron(Perceptron* nextP);
@@ -40,6 +43,6 @@ namespace Utils::AI
 		/**
 		 * Summum the inputs than go through activation function.
 		 */
-		float process(int selfIndex = 0) const;
+		float process(int selfIndex);
 	};
 }

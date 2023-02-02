@@ -27,9 +27,11 @@ void Utils::AI::Perceptron::feed(int index, float input)
 	inputs[index].value = input;
 }
 
-float Utils::AI::Perceptron::process(int selfIndex) const
+float Utils::AI::Perceptron::process(int selfIndex)
 {
-	float output = (*func)(sum());
+	output = (*func)(sum());
+
+	// feed to next perceptron
 	if (!nextPerceptrons.empty())
 	{
 		for (Perceptron* nextP : nextPerceptrons)

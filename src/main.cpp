@@ -46,17 +46,13 @@ int main()
 		//t.p2 = 5;
 	}
 
-	// artificial neural network (mlpn)
+	// Perceptron
 	{
-		// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
-		srand(static_cast <unsigned> (time(0)));
+		using namespace Utils::AI;
 
-		Utils::AI::NeuralNetwork::MLPModel model;
-		//model.addLayer();
-
-		Utils::AI::Perceptron p1(2, Utils::AI::ActivationImpl::tanH);
-		Utils::AI::Perceptron p2(2, Utils::AI::ActivationImpl::tanH);
-		Utils::AI::Perceptron p3(2, Utils::AI::ActivationImpl::tanH);
+		Perceptron p1(2, ActivationImpl::reLU);
+		Perceptron p2(2, ActivationImpl::reLU);
+		Perceptron p3(2, ActivationImpl::linear);
 
 		p1.addNextPerceptron(&p3);
 		p2.addNextPerceptron(&p3);
@@ -67,7 +63,74 @@ int main()
 		p2.feed(1, 1.f);
 		p1.process(0);
 		p2.process(1);
-		std::cout << p3.process() << std::endl;
+		std::cout << p3.process(0) << std::endl;
+	}
+	// artificial neural network (mlpn) (finding an architecture)
+	{
+		using namespace Utils::AI;
+
+		// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
+		srand(static_cast <unsigned> (time(0)));
+
+		// MLPModel (finding an architecture)
+		using Layer = std::vector<Perceptron>;
+
+		std::vector<Layer> network;
+
+		// input layer
+		std::vector<float> inputs;
+		inputs.resize(2);
+
+		// add hidden layer
+		network.push_back(Layer());
+		for (int i = 0; i < 2; ++i)
+		{
+			Layer& thisLayer = *(network.end() - 1);
+			thisLayer.push_back(Perceptron(inputs.size(), ActivationImpl::reLU));
+		}
+
+		// add output layer
+		network.push_back(Layer());
+		for (int i = 0; i < 1; ++i)
+		{
+			// previous layer is before actual layer
+			Layer& previousLayer = *(network.end() - 2);
+			Layer& thisLayer = *(network.end() - 1);
+
+			Perceptron p(previousLayer.size(), ActivationImpl::linear);
+			thisLayer.push_back(p);
+
+			// link to previous layer
+			for (int j = 0; j < previousLayer.size(); ++j)
+			{
+				previousLayer[j].addNextPerceptron(&thisLayer[i]);
+			}
+		}
+
+		// feed forward
+		inputs[0] = 0.f;
+		inputs[1] = 1.f;
+
+		// feed first layer with inputs
+		Layer& firstLayer = network[0];
+		for (int i = 0; i < firstLayer.size(); ++i)
+		{
+			for (int j = 0; j < inputs.size(); ++j)
+			{
+				firstLayer[i].feed(j, inputs[j]);
+			}
+		}
+
+		// process network
+		for (Layer& layer : network)
+		{
+			for (int i = 0; i < layer.size(); ++i)
+			{
+				layer[i].process(i);
+			}
+		}
+
+		std::cout << network[1][0].output << std::endl;
 	}
 
 	return 0;
