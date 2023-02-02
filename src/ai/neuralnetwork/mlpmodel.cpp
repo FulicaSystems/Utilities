@@ -73,6 +73,32 @@ std::vector<float> Utils::AI::NeuralNetwork::MLPModel::getOutputs() const
 	return outputs;
 }
 
-void Utils::AI::NeuralNetwork::MLPModel::backPropagation(const std::vector<float>& targetOutputs)
+void Utils::AI::NeuralNetwork::MLPModel::processErrorFromTarget(const std::vector<float>& targetOutputs)
 {
+	for (auto it = network.rbegin(); it != network.rend(); ++it)
+	{
+		Layer& layer = *it;
+
+		for (int i = 0; i < layer.size(); ++i)
+		{
+			Perceptron& thisPerceptron = layer[i];
+			float o = thisPerceptron.output;
+
+			if (thisPerceptron.getNextPerceptrons().size() > 0) // hidden layer
+			{
+				// sum of next perceptrons' error rate
+				float deltaSum = 0.f;
+				for (const Perceptron* nextP : thisPerceptron.getNextPerceptrons())
+				{
+					deltaSum += nextP->getInputWeight(i) * nextP->delta;
+				}
+
+				thisPerceptron.delta = o * (1.f - o) * deltaSum;
+			}
+			else // output layer
+			{
+				thisPerceptron.delta = o * (1.f - o) * (targetOutputs[i] - o);
+			}
+		}
+	}
 }

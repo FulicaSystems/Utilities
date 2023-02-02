@@ -23,6 +23,16 @@ void Utils::AI::Perceptron::addNextPerceptron(Perceptron* nextP)
 	nextPerceptrons.push_back(nextP);
 }
 
+float Utils::AI::Perceptron::getInputWeight(const int inputIndex) const
+{
+	return inputs[inputIndex].weight;
+}
+
+const std::vector<Utils::AI::Perceptron*>& Utils::AI::Perceptron::getNextPerceptrons() const
+{
+	return nextPerceptrons;
+}
+
 void Utils::AI::Perceptron::feed(int index, float input)
 {
 	inputs[index].value = input;

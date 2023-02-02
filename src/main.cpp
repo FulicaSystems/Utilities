@@ -187,9 +187,9 @@ int main()
 				std::vector<float> outputs;
 				for (int j = 0; j < outputNum; ++j)
 				{
-					outputs.push_back(inputNum + j);
+					outputs.push_back(set[inputNum + j]);
 				}
-				model.backPropagation(outputs);
+				model.processErrorFromTarget(outputs);
 
 				std::cout << model.getOutputs()[0] << std::endl;
 			}

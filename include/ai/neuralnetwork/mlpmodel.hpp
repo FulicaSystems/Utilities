@@ -30,6 +30,6 @@ namespace Utils::AI::NeuralNetwork
 
 		std::vector<float> getOutputs() const;
 
-		void backPropagation(const std::vector<float>& targetOutputs);
+		void processErrorFromTarget(const std::vector<float>& targetOutputs);
 	};
 }
