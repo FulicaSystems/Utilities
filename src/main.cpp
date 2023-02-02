@@ -11,6 +11,9 @@
 
 int main()
 {
+	// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
+	srand(static_cast <unsigned> (time(0)));
+
 	// mathematics
 	{
 		std::cout << "Hello world !" << std::endl;
@@ -69,9 +72,6 @@ int main()
 	{
 		using namespace Utils::AI;
 
-		// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
-		srand(static_cast <unsigned> (time(0)));
-
 		// MLPModel (finding an architecture)
 		using Layer = std::vector<Perceptron>;
 
@@ -97,8 +97,7 @@ int main()
 			Layer& previousLayer = *(network.end() - 2);
 			Layer& thisLayer = *(network.end() - 1);
 
-			Perceptron p(previousLayer.size(), ActivationImpl::linear);
-			thisLayer.push_back(p);
+			thisLayer.push_back(Perceptron(previousLayer.size(), ActivationImpl::linear));
 
 			// link to previous layer
 			for (int j = 0; j < previousLayer.size(); ++j)
@@ -131,6 +130,16 @@ int main()
 		}
 
 		std::cout << network[1][0].output << std::endl;
+	}
+	// artificial neural network (mlpn)
+	{
+		Utils::AI::NeuralNetwork::MLPModel model(2);
+		model.addLayer(2, Utils::AI::ActivationImpl::reLU);
+		model.addLayer(1, Utils::AI::ActivationImpl::linear);
+
+		model.feedForward({ 0.f, 1.f });
+
+		std::cout << model.getOutputs()[0] << std::endl;
 	}
 
 	return 0;
