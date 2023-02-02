@@ -29,5 +29,7 @@ namespace Utils::AI::NeuralNetwork
 		void feedForward(const std::vector<float>& inputs);
 
 		std::vector<float> getOutputs() const;
+
+		void backPropagation(const std::vector<float>& targetOutputs);
 	};
 }

@@ -14,6 +14,7 @@ int main()
 	// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
 	srand(static_cast <unsigned> (time(0)));
 
+	std::cout << "mathematics testing ====================" << std::endl;
 	// mathematics
 	{
 		std::cout << "Hello world !" << std::endl;
@@ -27,6 +28,7 @@ int main()
 		std::cout << d << std::endl;
 	}
 
+	std::cout << "property testing ====================" << std::endl;
 	// property
 	{
 		class Test
@@ -49,6 +51,7 @@ int main()
 		//t.p2 = 5;
 	}
 
+	std::cout << "perceptron testing ====================" << std::endl;
 	// Perceptron
 	{
 		using namespace Utils::AI;
@@ -68,6 +71,7 @@ int main()
 		p2.process(1);
 		std::cout << p3.process(0) << std::endl;
 	}
+	std::cout << "mlpn testing ====================" << std::endl;
 	// artificial neural network (mlpn) (finding an architecture)
 	{
 		using namespace Utils::AI;
@@ -131,6 +135,7 @@ int main()
 
 		std::cout << network[1][0].output << std::endl;
 	}
+	std::cout << "mlpn testing ====================" << std::endl;
 	// artificial neural network (mlpn)
 	{
 		Utils::AI::NeuralNetwork::MLPModel model(2);
@@ -140,6 +145,55 @@ int main()
 		model.feedForward({ 0.f, 1.f });
 
 		std::cout << model.getOutputs()[0] << std::endl;
+	}
+	std::cout << "backpropagation testing ====================" << std::endl;
+	// mlpn back propagation (XOR problem)
+	{
+		int epoch = 1;
+		int inputNum = 2;
+		int outputNum = 1;
+
+		Utils::AI::NeuralNetwork::MLPModel model(inputNum);
+		model.addLayer(2, Utils::AI::ActivationImpl::reLU);
+		model.addLayer(outputNum, Utils::AI::ActivationImpl::linear);
+
+		using TrainingSet = std::vector<float>;
+
+		// 2 inputs and 1 output
+		TrainingSet set0 = { 0.f, 0.f, 0.f };
+		TrainingSet set1 = { 1.f, 0.f, 1.f };
+		TrainingSet set2 = { 0.f, 1.f, 1.f };
+		TrainingSet set3 = { 1.f, 1.f, 0.f };
+
+		std::vector<TrainingSet> sets;
+		sets.push_back(set0);
+		sets.push_back(set1);
+		sets.push_back(set2);
+		sets.push_back(set3);
+
+		for (int i = 0; i < epoch; ++i)
+		{
+			for (TrainingSet& set : sets)
+			{
+				// input set
+				std::vector<float> inputs;
+				for (int j = 0; j < inputNum; ++j)
+				{
+					inputs.push_back(set[j]);
+				}
+				model.feedForward(inputs);
+
+				// compare to target output
+				std::vector<float> outputs;
+				for (int j = 0; j < outputNum; ++j)
+				{
+					outputs.push_back(inputNum + j);
+				}
+				model.backPropagation(outputs);
+
+				std::cout << model.getOutputs()[0] << std::endl;
+			}
+		}
 	}
 
 	return 0;

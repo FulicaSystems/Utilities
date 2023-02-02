@@ -41,7 +41,7 @@ namespace Utils::AI
 		void feed(int index, float input);
 
 		/**
-		 * Summum the inputs than go through activation function.
+		 * Summum the inputs than go through activation function (do not forget to feed).
 		 */
 		float process(int selfIndex);
 	};

@@ -44,7 +44,7 @@ void Utils::AI::NeuralNetwork::MLPModel::feedForward(const std::vector<float>& i
 	Layer& firstLayer = network[0];
 	for (int i = 0; i < firstLayer.size(); ++i)
 	{
-		for (int j = 0; j < inputs.size(); ++j)
+		for (int j = 0; j < inputLayerSize; ++j)
 		{
 			firstLayer[i].feed(j, inputs[j]);
 		}
@@ -71,4 +71,8 @@ std::vector<float> Utils::AI::NeuralNetwork::MLPModel::getOutputs() const
 	}
 
 	return outputs;
+}
+
+void Utils::AI::NeuralNetwork::MLPModel::backPropagation(const std::vector<float>& targetOutputs)
+{
 }

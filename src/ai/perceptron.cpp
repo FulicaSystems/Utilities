@@ -3,7 +3,8 @@
 Utils::AI::Perceptron::Perceptron(int numInput, ActivationPtr func)
 	: func(func)
 {
-	inputs.resize(numInput);
+	// plus bias
+	inputs.resize(numInput + 1);
 }
 
 float Utils::AI::Perceptron::sum() const
@@ -29,6 +30,9 @@ void Utils::AI::Perceptron::feed(int index, float input)
 
 float Utils::AI::Perceptron::process(int selfIndex)
 {
+	// bias
+	(inputs.end() - 1)->value = 1.f;
+
 	output = (*func)(sum());
 
 	// feed to next perceptron
