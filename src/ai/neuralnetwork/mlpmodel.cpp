@@ -73,8 +73,9 @@ std::vector<float> Utils::AI::NeuralNetwork::MLPModel::getOutputs() const
 	return outputs;
 }
 
-void Utils::AI::NeuralNetwork::MLPModel::processErrorFromTarget(const std::vector<float>& targetOutputs)
+void Utils::AI::NeuralNetwork::MLPModel::processErrorFromTarget(const std::vector<float>& targetOutputs, const bool bAdjustWeight)
 {
+	// process error rate from output layer to first hidden layer
 	for (auto it = network.rbegin(); it != network.rend(); ++it)
 	{
 		Layer& layer = *it;
@@ -99,6 +100,25 @@ void Utils::AI::NeuralNetwork::MLPModel::processErrorFromTarget(const std::vecto
 			{
 				thisPerceptron.delta = o * (1.f - o) * (targetOutputs[i] - o);
 			}
+
+			if (bAdjustWeight)
+			{
+				// adjust weights of the perceptron directly after processing its error rate
+				// do not combine with global error fit
+				// influences back propagation
+				thisPerceptron.adjustWeights(0.3f);
+			}
+		}
+	}
+}
+
+void Utils::AI::NeuralNetwork::MLPModel::fitError(const float alpha)
+{
+	for (Layer& layer : network)
+	{
+		for (Perceptron& p : layer)
+		{
+			p.adjustWeights(alpha);
 		}
 	}
 }

@@ -20,7 +20,7 @@ float Utils::AI::ActivationImpl::reLU(const float x)
 
 float Utils::AI::ActivationImpl::sigmoid(const float x)
 {
-	float beta = 0.5f;
+	float beta = 10.f;
 	float e = std::exp(-beta * x);
 
 	return 1.f / (1.f + e);

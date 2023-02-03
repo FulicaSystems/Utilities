@@ -30,6 +30,13 @@ namespace Utils::AI::NeuralNetwork
 
 		std::vector<float> getOutputs() const;
 
-		void processErrorFromTarget(const std::vector<float>& targetOutputs);
+		void processErrorFromTarget(const std::vector<float>& targetOutputs, const bool bAdjustWeight = true);
+
+		/**
+		 * Adjust every perceptrons' weights.
+		 * 
+		 * @param float alpha is the learning rate
+		 */
+		void fitError(const float alpha = 0.3f);
 	};
 }

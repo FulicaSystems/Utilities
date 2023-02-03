@@ -147,15 +147,15 @@ int main()
 		std::cout << model.getOutputs()[0] << std::endl;
 	}
 	std::cout << "backpropagation testing ====================" << std::endl;
-	// mlpn back propagation (XOR problem)
+	// mlpn back propagation (XOR problem, finding an architecture)
 	{
-		int epoch = 1;
+		int epoch = 999;
 		int inputNum = 2;
 		int outputNum = 1;
 
 		Utils::AI::NeuralNetwork::MLPModel model(inputNum);
-		model.addLayer(2, Utils::AI::ActivationImpl::reLU);
-		model.addLayer(outputNum, Utils::AI::ActivationImpl::linear);
+		model.addLayer(2, Utils::AI::ActivationImpl::sigmoid);
+		model.addLayer(outputNum, Utils::AI::ActivationImpl::sigmoid);
 
 		using TrainingSet = std::vector<float>;
 
@@ -183,6 +183,10 @@ int main()
 				}
 				model.feedForward(inputs);
 
+				std::cout << model.getOutputs()[0] << std::endl;
+
+				// back propagation : process error then adjust weights
+				// errors
 				// compare to target output
 				std::vector<float> outputs;
 				for (int j = 0; j < outputNum; ++j)
@@ -191,9 +195,15 @@ int main()
 				}
 				model.processErrorFromTarget(outputs);
 
-				std::cout << model.getOutputs()[0] << std::endl;
+				// adjust weights after processing every error rates
+				// fit the entire model if the weights are not adjusted after the error rate calculation
+				//model.fitError();
 			}
 		}
+
+		std::cout << "after learning" << std::endl;
+		model.feedForward({ 1.f, 1.f });
+		std::cout << model.getOutputs()[0] << std::endl;
 	}
 
 	return 0;

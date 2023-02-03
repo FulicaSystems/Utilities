@@ -5,6 +5,8 @@ Utils::AI::Perceptron::Perceptron(int numInput, ActivationPtr func)
 {
 	// plus bias
 	inputs.resize(numInput + 1);
+	// setting bias
+	(inputs.end() - 1)->value = 1.f;
 }
 
 float Utils::AI::Perceptron::sum() const
@@ -28,6 +30,20 @@ float Utils::AI::Perceptron::getInputWeight(const int inputIndex) const
 	return inputs[inputIndex].weight;
 }
 
+void Utils::AI::Perceptron::adjustWeights(const float alpha)
+{
+	// save bias weight
+	//float biasW = (inputs.end() - 1)->weight;
+
+	for (Input& i : inputs)
+	{
+		i.weight += alpha * delta * i.value;
+	}
+
+	// reapply bias weight
+	//(inputs.end() - 1)->weight = biasW;
+}
+
 const std::vector<Utils::AI::Perceptron*>& Utils::AI::Perceptron::getNextPerceptrons() const
 {
 	return nextPerceptrons;
@@ -40,9 +56,6 @@ void Utils::AI::Perceptron::feed(int index, float input)
 
 float Utils::AI::Perceptron::process(int selfIndex)
 {
-	// bias
-	(inputs.end() - 1)->value = 1.f;
-
 	output = (*func)(sum());
 
 	// feed to next perceptron

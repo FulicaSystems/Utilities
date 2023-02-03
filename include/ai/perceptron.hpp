@@ -28,7 +28,7 @@ namespace Utils::AI
 		float sum() const;
 
 	public:
-		// result (state) of the perceptron after processing
+		// result (state) of this perceptron after processing
 		float output = 0.f;
 
 		// error rate
@@ -47,6 +47,13 @@ namespace Utils::AI
 		 * Summum the inputs than go through activation function (do not forget to feed).
 		 */
 		float process(int selfIndex);
+
+		/**
+		 * Adjust this perceptron's weights.
+		 * 
+		 * @param float alpha is the learning rate
+		 */
+		void adjustWeights(const float alpha);
 
 		const std::vector<Perceptron*>& getNextPerceptrons() const;
 
