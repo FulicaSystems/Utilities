@@ -32,16 +32,10 @@ float Utils::AI::Perceptron::getInputWeight(const int inputIndex) const
 
 void Utils::AI::Perceptron::adjustWeights(const float alpha)
 {
-	// save bias weight
-	//float biasW = (inputs.end() - 1)->weight;
-
 	for (Input& i : inputs)
 	{
 		i.weight += alpha * delta * i.value;
 	}
-
-	// reapply bias weight
-	//(inputs.end() - 1)->weight = biasW;
 }
 
 const std::vector<Utils::AI::Perceptron*>& Utils::AI::Perceptron::getNextPerceptrons() const
