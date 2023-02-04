@@ -22,11 +22,13 @@ void Utils::AI::NeuralNetwork::MLPModel::addLayer(const int numPerceptron, Activ
 	}
 
 	network.push_back(Layer());
+	// prevent reallocation when pushing back
+	(*(network.end() - 1)).reserve(numPerceptron);
 	for (int i = 0; i < numPerceptron; ++i)
 	{
 		// previous layer is before actual layer
-		Layer& previousLayer = *(network.end() - 2);
-		Layer& thisLayer = *(network.end() - 1);
+		Layer& previousLayer = network[network.size() - 2];
+		Layer& thisLayer = network[network.size() - 1];
 
 		thisLayer.push_back(Perceptron(previousLayer.size(), func));
 
@@ -106,19 +108,59 @@ void Utils::AI::NeuralNetwork::MLPModel::processErrorFromTarget(const std::vecto
 				// adjust weights of the perceptron directly after processing its error rate
 				// do not combine with global error fit
 				// influences back propagation
-				thisPerceptron.adjustWeights(0.3f);
+				thisPerceptron.adjustWeights(alpha);
 			}
 		}
 	}
 }
 
-void Utils::AI::NeuralNetwork::MLPModel::fitError(const float alpha)
+void Utils::AI::NeuralNetwork::MLPModel::fitTarget()
 {
 	for (Layer& layer : network)
 	{
 		for (Perceptron& p : layer)
 		{
 			p.adjustWeights(alpha);
+		}
+	}
+}
+
+void Utils::AI::NeuralNetwork::MLPModel::trainFromSet(const int epoch, const TrainingSet& sets, const bool bAfterward)
+{
+	int inputNum = inputLayerSize;
+
+	const Layer& outputLayer = *(network.end() - 1);
+	int outputNum = outputLayer.size();
+
+	for (int i = 0; i < epoch; ++i)
+	{
+		for (const TrainingSheet& sheet : sets)
+		{
+			// input set
+			std::vector<float> inputs;
+			for (int j = 0; j < inputNum; ++j)
+			{
+				inputs.push_back(sheet[j]);
+			}
+			// feed training inputs
+			feedForward(inputs);
+
+			// back propagation : process error then adjust weights
+			// errors
+			// compare to target output
+			std::vector<float> outputs;
+			for (int j = 0; j < outputNum; ++j)
+			{
+				outputs.push_back(sheet[inputNum + j]);
+			}
+			processErrorFromTarget(outputs, !bAfterward);
+
+			if (bAfterward)
+			{
+				// adjust weights after processing every error rates
+				// fit the entire model if the weights are not adjusted after the error rate calculation
+				fitTarget();
+			}
 		}
 	}
 }
