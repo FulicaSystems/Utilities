@@ -15,32 +15,48 @@
 #include <stdlib.h>
 #include <crtdbg.h>
 
+static _CrtMemState chklk_open;
+static _CrtMemState chklk_close;
+static _CrtMemState chklk_diff;
+
 // init standard leak check
 #define CHKLK_INIT _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG | _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 // take the entry snapshot of memory allocation
-#define CHKLK_ENTRY_SNAP _CrtMemState entry; _CrtMemCheckpoint(&entry);
+#define CHKLK_ENTRY_SNAP _CrtMemCheckpoint(&chklk_open);
 
 // take the exit snapshot of memory allocation
-#define CHKLK_EXIT_SNAP _CrtMemState exit; _CrtMemCheckpoint(&exit);
+#define CHKLK_EXIT_SNAP _CrtMemCheckpoint(&chklk_close);
+
+// general leak state
+// include Windows.h file to print to output log
+#define CHKLK_LEAK_VERBOSE\
+    OutputDebugString("\n-----------_CrtDumpMemoryLeaks-----------\n");\
+    _CrtDumpMemoryLeaks();\
+    OutputDebugString("-----------------------------------------\n\n");
+
+// include Windows.h file to print to output log
+#define CHKLK_MEMORY_STATE(state)\
+    OutputDebugString("\n----------_CrtMemDumpStatistics----------\n");\
+    _CrtMemDumpStatistics(&state);\
+    OutputDebugString("-----------------------------------------\n\n");
 
 // difference between entry state and exit state
 // include Windows.h file to print to output log
 #define CHKLK_DIFF_SNAP\
-    _CrtMemState diff;\
-    if (_CrtMemDifference(&diff, &entry, &exit))\
+    if (_CrtMemDifference(&chklk_diff, &chklk_open, &chklk_close))\
         OutputDebugString("\nMEMORY LEAKS DETECTED WITHIN THE SNAPSHOTS SCOPE\n");\
     else\
         OutputDebugString("\nNO MEMORY LEAKS DETECTED WITHIN THE SNAPSHOTS SCOPE\n");\
-\
-    OutputDebugString("\n----------_CrtMemDumpStatistics----------\n");\
-    _CrtMemDumpStatistics(&diff);\
-    OutputDebugString("-----------------------------------------\n\n");
+    CHKLK_MEMORY_STATE(chklk_diff)
+
+// include Windows.h file to print to output log
+#define CHKLK_DIFF_VERBOSE\
+    CHKLK_DIFF_SNAP\
+    CHKLK_LEAK_VERBOSE
 
 // some memory could be leaked or freed outside of the snapshots take
 // include Windows.h file to print to output log
 #define CHKLK_APP\
-    OutputDebugString("\nGENERAL APPLICATION MEMORY LEAK CHECK\n"); \
-    OutputDebugString("\n-----------_CrtDumpMemoryLeaks-----------\n");\
-    _CrtDumpMemoryLeaks();\
-    OutputDebugString("-----------------------------------------\n\n");
+    OutputDebugString("\nGENERAL APPLICATION MEMORY LEAK CHECK\n");\
+    CHKLK_LEAK_VERBOSE

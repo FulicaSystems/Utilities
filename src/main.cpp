@@ -1,5 +1,6 @@
 #include <iostream>
 
+#define CHKLK_OVERRIDE_NEW_OP
 #include "utils/checkleak.hpp"
 
 #include "mathematics.hpp"
@@ -233,8 +234,9 @@ int main()
 	}
 
 	CHKLK_EXIT_SNAP
-	CHKLK_DIFF_SNAP
+	CHKLK_DIFF_VERBOSE
 
+	//int* a = new int;
 	CHKLK_APP
 	return 0;
 }
