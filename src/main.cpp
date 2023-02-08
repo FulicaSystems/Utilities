@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "utils/memleaks.hpp"
+#include "utils/checkleak.hpp"
 
 #include "mathematics.hpp"
 #include "utils/property.hpp"
@@ -9,8 +9,13 @@
 #include "utils/ai/activation.hpp"
 #include "utils/ai/neuralnetwork/mlpmodel.hpp"
 
+#include <Windows.h>
+
 int main()
 {
+	CHKLK_INIT
+	CHKLK_ENTRY_SNAP
+
 	// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
 	srand(static_cast <unsigned> (time(0)));
 
@@ -227,5 +232,9 @@ int main()
 		std::cout << model.getOutputs()[0] << std::endl;
 	}
 
+	CHKLK_EXIT_SNAP
+	CHKLK_DIFF_SNAP
+
+	CHKLK_APP
 	return 0;
 }
