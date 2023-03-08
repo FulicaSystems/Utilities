@@ -12,6 +12,8 @@
 
 #include <Windows.h>
 
+#include "utils/super.hpp"
+
 int main()
 {
 	CHKLK_INIT
@@ -231,6 +233,49 @@ int main()
 		std::cout << "training finished" << std::endl;
 		model.feedForward({ 1.f, 1.f });
 		std::cout << model.getOutputs()[0] << std::endl;
+	}
+
+	// super test
+	{
+		class A
+		{
+		public:
+			virtual void foo()
+			{
+				std::cout << "A" << std::endl;
+			}
+		};
+
+		class B : public IDerived<B, A>
+		{
+		public:
+			void foo()
+			{
+				Super::foo(); // A
+				std::cout << "B" << std::endl;
+			}
+		};
+
+		class C : public IDerived<C, B>
+		{
+		public:
+			void foo()
+			{
+				Super::foo(); // A B
+				std::cout << "C" << std::endl;
+
+				Super::Super::foo(); // A
+			}
+		};
+
+		A a;
+		a.foo();
+
+		B b;
+		b.foo();
+
+		C c;
+		c.foo();
 	}
 
 	CHKLK_EXIT_SNAP
