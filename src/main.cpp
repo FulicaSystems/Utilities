@@ -305,12 +305,14 @@ int main()
 	{
 		Utils::ThreadPool pool;
 
-		for (int i = 0; i < 6; ++i)
+		for (int i = 0; i < 99; ++i)
 		{
 			pool.addTask([i]() {
 				std::cout << i << std::endl;
-				});
+				}, true);
 		}
+
+		pool.pollMainQueue();
 	}
 
 	CHKLK_EXIT_SNAP

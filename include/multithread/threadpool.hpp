@@ -17,9 +17,12 @@ namespace Utils
 	private:
 		std::vector<std::jthread>	threads;
 
+
+		// timing
 		float						startTime = 0.f;
 		float						endTime = 0.f;
 		std::atomic<float>			lastTaskTime;
+
 
 		// shared data
 
@@ -30,11 +33,13 @@ namespace Utils
 
 		// task queue mutex (used for workerTasks)
 		std::mutex					workerQueueMX;
+		// task queue mutex (used for mainQueue)
+		std::mutex					mainQueueMX;
 		// print mutex
 		std::mutex					printMX;
 
 		// is the work routine running?
-		std::atomic<bool>			running;
+		std::atomic_flag			running = ATOMIC_FLAG_INIT;
 
 	public:
 		/**
@@ -56,15 +61,16 @@ namespace Utils
 		 * 
 		 * @param fct
 		 */
-		void addTask(std::function<void()> fct);
+		void addTask(std::function<void()> fct, const bool parallel = true);
 
 		/**
 		 * Thread routine.
-		 * Main loop function
 		 * 
 		 * @param id
 		 */
 		void poolRoutine(int id);
+
+		void pollMainQueue();
 
 		/**
 		 * Print the thread id.
@@ -72,30 +78,5 @@ namespace Utils
 		 * @param id
 		 */
 		void printThreadId(int id);
-
-		/**
-		 * Get the time to store as the thread pool's starting time.
-		 * 
-		 */
-		void setStartTime();
-
-		/**
-		 * Return the time between now and the start time.
-		 * Equivalent to a loading time.
-		 * The user chooses when to show the loading time, do not forget to set the start time.
-		 */
-		float getLoadingTime();
-
-		/**
-		 * Time when the pool has finished doing every tasks.
-		 */
-		float printLastWorkingTime();
-
-		/**
-		 * Print the time when the last task was finished.
-		 * 
-		 * @return 
-		 */
-		float printLastWorkingTimeOnce();
 	};
 }
