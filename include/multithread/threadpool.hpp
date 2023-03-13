@@ -2,9 +2,11 @@
 
 #include <thread>
 #include <atomic>
+#include <deque>
+#include <mutex>
 
 #include "numerics.hpp"
-#include "utils/containers/queue.hpp"
+
 #include "utils/multithread/task.hpp"
 #include "utils/multithread/spinlock.hpp"
 
@@ -13,31 +15,35 @@ namespace Utils
 	class ThreadPool
 	{
 	private:
-		std::thread*	th = nullptr;
-		//number of threads
-		uint			nThread = 0;
-		bool			multithread = true;
+		std::vector<std::jthread>	threads;
 
-		float				startTime = 0.f;
-		float				endTime = 0.f;
-		std::atomic<float>	lastTaskTime;
+		float						startTime = 0.f;
+		float						endTime = 0.f;
+		std::atomic<float>			lastTaskTime;
 
-		//shared date
-		Queue<Task>			tasks;
-		SpinLock			queueSL;
-		SpinLock			printSL;
+		// shared data
 
-		//is the routine running?
-		std::atomic<bool>	running;
+		// parallel tasks
+		std::deque<Task>			workerQueue;
+		// main thread tasks
+		std::deque<Task>			mainQueue;
+
+		// task queue mutex (used for workerTasks)
+		std::mutex					workerQueueMX;
+		// print mutex
+		std::mutex					printMX;
+
+		// is the work routine running?
+		std::atomic<bool>			running;
 
 	public:
 		/**
 		 * Create the thread pool.
 		 * Specify the number of threads, the number of threads is by default the maximum that the machine can get.
 		 * 
-		 * @param nThread
+		 * @param nThreads
 		 */
-		ThreadPool(uint nThread = std::thread::hardware_concurrency());
+		ThreadPool(uint nThreads = std::thread::hardware_concurrency());
 
 		/**
 		 * End the thread pool.
@@ -46,47 +52,11 @@ namespace Utils
 		~ThreadPool();
 
 		/**
-		 * Set the pool to function or not.
-		 * true : multithread
-		 * false : monothread
-		 * 
-		 * @param param
-		 */
-		void setMultithread(const bool param);
-
-		/**
-		 * Is the pool functionning in multithread?
-		 * 
-		 * @return 
-		 */
-		bool& getMultithreadParam();
-
-		/**
-		 * Get the number of threads.
-		 * 
-		 * @return 
-		 */
-		uint getThreadsNumber() const;
-
-		/**
 		 * Add a task to the task queue.
 		 * 
 		 * @param fct
 		 */
 		void addTask(std::function<void()> fct);
-
-		/**
-		 * Remove a task from the task queue.
-		 * 
-		 * @param iterator
-		 */
-		void removeTask(const int iterator = 0);
-
-		/**
-		 * Choose a task then do it.
-		 * 
-		 */
-		void work();
 
 		/**
 		 * Thread routine.
@@ -102,12 +72,6 @@ namespace Utils
 		 * @param id
 		 */
 		void printThreadId(int id);
-
-		/**
-		 * Join every threads, after the end of every task.
-		 * 
-		 */
-		void endPool();
 
 		/**
 		 * Get the time to store as the thread pool's starting time.

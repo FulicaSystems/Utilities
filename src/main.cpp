@@ -16,13 +16,15 @@
 
 #include "utils/containers/queue.hpp"
 
+#include "utils/multithread/threadpool.hpp"
+
 int main()
 {
 	CHKLK_INIT
-	CHKLK_ENTRY_SNAP
+		CHKLK_ENTRY_SNAP
 
-	// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
-	srand(static_cast <unsigned> (time(0)));
+		// TODO : find a better way for rng (https://stackoverflow.com/a/322995)
+		srand(static_cast <unsigned> (time(0)));
 
 	std::cout << "mathematics testing ====================" << std::endl;
 	// mathematics
@@ -280,6 +282,7 @@ int main()
 		c.foo();
 	}
 
+#if false
 	// queue test
 	{
 		Utils::Queue<int> myQueue;
@@ -296,10 +299,18 @@ int main()
 		std::cout << myQueue.frontData(4) << std::endl;
 		//std::cout << myQueue.frontData(5) << std::endl; // out of range (assert)
 	}
+#endif
 
 	// threadpool test
 	{
+		Utils::ThreadPool pool;
 
+		for (int i = 0; i < 6; ++i)
+		{
+			pool.addTask([i]() {
+				std::cout << i << std::endl;
+				});
+		}
 	}
 
 	CHKLK_EXIT_SNAP
