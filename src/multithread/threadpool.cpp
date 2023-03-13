@@ -1,20 +1,8 @@
 #include <iostream>
 
 #include <chrono>
-#include <functional>
 
-#include "utils/threadpool.hpp"
-
-Utils::Task::Task(std::function<void()> fct)
-	: task(fct)
-{
-}
-
-void Utils::Task::doTask()
-{
-	if (task)
-		task();
-}
+#include "utils/multithread/threadpool.hpp"
 
 Utils::ThreadPool::ThreadPool(uint nThread)
 {
@@ -77,7 +65,7 @@ void Utils::ThreadPool::work()
 	Task t = tasks.frontData();
 	removeTask();
 
-	t.doTask();
+	t();
 
 	auto now = (float)std::chrono::duration_cast<std::chrono::milliseconds>
 		(std::chrono::steady_clock::now().time_since_epoch()).count();

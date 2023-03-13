@@ -2,34 +2,14 @@
 
 #include <thread>
 #include <atomic>
-#include <functional>
 
-#include "utils/utils.hpp"
+#include "numerics.hpp"
+#include "utils/containers/queue.hpp"
+#include "utils/multithread/task.hpp"
+#include "utils/multithread/spinlock.hpp"
 
 namespace Utils
 {
-	class Task
-	{
-	private:
-		std::function<void()> task;
-
-	public:
-		Task() = default;
-
-		/**
-		 * Create a task using a function.
-		 * 
-		 * @param fct
-		 */
-		Task(std::function<void()> fct);
-
-		/**
-		 * Run the function.
-		 * 
-		 */
-		void doTask();
-	};
-
 	class ThreadPool
 	{
 	private:

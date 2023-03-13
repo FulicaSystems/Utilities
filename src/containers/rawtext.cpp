@@ -1,19 +1,4 @@
-#include <thread>
-
-#include "utils/utils.hpp"
-
-void Utils::SpinLock::lock()
-{
-	while (flag.test_and_set())
-	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
-	}
-}
-
-void Utils::SpinLock::unlock()
-{
-	flag.clear();
-}
+#include "utils/containers/rawtext.hpp"
 
 Utils::RawText::RawText(const std::string& str)
 	: raw(str)

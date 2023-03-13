@@ -1,10 +1,5 @@
 #pragma once
 
-#include <cassert>
-
-#include <string>
-#include <atomic>
-
 #include "mathematics.hpp"
 
 namespace Utils
@@ -19,7 +14,7 @@ namespace Utils
 
 		/**
 		 * Create a node used in the queue.
-		 * 
+		 *
 		 * @param t
 		 */
 		Node(const T& t);
@@ -59,77 +54,17 @@ namespace Utils
 
 		/**
 		 * Is the queue empty?
-		 * 
-		 * @return 
+		 *
+		 * @return
 		 */
 		bool isQueueEmpty();
 
 		/**
 		 * Get the size of the queue.
-		 * 
-		 * @return 
+		 *
+		 * @return
 		 */
 		uint sizeQueue() const;
-	};
-
-	class SpinLock
-	{
-	private:
-		std::atomic_flag flag = ATOMIC_FLAG_INIT;
-
-	public:
-		/**
-		 * Lock the spin lock.
-		 * 
-		 */
-		void lock();
-
-		/**
-		 * Unlock the spin lock.
-		 * 
-		 */
-		void unlock();
-	};
-
-	class RawText
-	{
-	private:
-		std::string raw;
-		int			length = 0;
-		//which character is the cursor pointing at?
-		int			cursor = 0;
-
-	public:
-		RawText() = default;
-
-		/**
-		 * Create a raw text from a std::string.
-		 * 
-		 * @param str
-		 */
-		RawText(const std::string& str);
-
-		/**
-		 * Move the cursor.
-		 * 
-		 * @param pos
-		 */
-		void setCursor(const int pos);
-
-		/**
-		 * Get the line where the cursor is, then move the cursor to the beginning of the next line.
-		 * 
-		 * @param out
-		 * @return 
-		 */
-		bool getline(std::string& out);
-
-		/**
-		 * Get the entire text.
-		 * 
-		 * @return 
-		 */
-		std::string& getRawText();
 	};
 }
 
@@ -149,23 +84,20 @@ inline Utils::Queue<T>::~Queue()
 template<typename T>
 inline T& Utils::Queue<T>::frontData(const int iterator)
 {
+	if (iterator >= size)
+		assert(("out of range", 0));
+
 	Node<T>* node = head;
 
-	if (node)
+	for (int i = 0; i < iterator; ++i)
 	{
-		for (int i = 0; i < iterator; ++i)
-		{
-			if (node->next)
-				node = node->next;
-			else
-				break;
-		}
-
-		return node->data;
+		if (node->next)
+			node = node->next;
+		else
+			break;
 	}
 
-	//std::abort();
-	assert(("out of range", 0));
+	return node->data;
 }
 
 template<typename T>
