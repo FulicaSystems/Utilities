@@ -8,7 +8,6 @@
 #include "numerics.hpp"
 
 #include "utils/multithread/task.hpp"
-#include "utils/multithread/spinlock.hpp"
 
 namespace Utils
 {
@@ -16,7 +15,8 @@ namespace Utils
 	{
 	private:
 		std::vector<std::jthread>	threads;
-
+		// thread-assigned bool to keep track of working threads
+		std::vector<bool>			workers;
 
 		// timing
 		float						startTime = 0.f;
@@ -37,6 +37,8 @@ namespace Utils
 		std::mutex					mainQueueMX;
 		// print mutex
 		std::mutex					printMX;
+
+		std::condition_variable		workerCV;
 
 		// is the work routine running?
 		std::atomic_flag			running = ATOMIC_FLAG_INIT;
@@ -71,6 +73,11 @@ namespace Utils
 		void poolRoutine(int id);
 
 		void pollMainQueue();
+
+		/**
+		 * Is the pool idling/ready.
+		 */
+		bool isIdle();
 
 		/**
 		 * Print the thread id.

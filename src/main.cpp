@@ -309,7 +309,7 @@ int main()
 		{
 			pool.addTask([i]() {
 				std::cout << i << std::endl;
-				}, true);
+				});
 		}
 
 		pool.pollMainQueue();
