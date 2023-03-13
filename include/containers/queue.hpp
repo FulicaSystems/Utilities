@@ -23,6 +23,10 @@ namespace Utils
 		Node<T>*	next = nullptr;
 	};
 
+	/**
+	 * This Queue class works like a chained list.
+	 * Using std::queue or std::deque is recommended.
+	 */
 	template<typename T>
 	class Queue
 	{
