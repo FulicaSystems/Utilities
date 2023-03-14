@@ -14,9 +14,9 @@ namespace Utils
 	class ThreadPool
 	{
 	private:
-		std::vector<std::jthread>	threads;
+		std::deque<std::jthread>	threads;
 		// thread-assigned bool to keep track of working threads
-		std::vector<bool>			workers;
+		std::deque<bool>			workers;
 
 		// timing
 		float						startTime = 0.f;

@@ -8,9 +8,9 @@ Utils::ThreadPool::ThreadPool(uint nThreads)
 {
 	for (uint i = 0; i < nThreads; ++i)
 	{
-		threads.push_back(std::jthread(std::bind(&ThreadPool::poolRoutine, this, i)));
+		threads.emplace_back(std::bind(&ThreadPool::poolRoutine, this, i));
 		// the threads are not working yet
-		workers.push_back(false);
+		workers.emplace_back(false);
 	}
 
 	running.test_and_set();
@@ -44,13 +44,13 @@ void Utils::ThreadPool::addTask(std::function<void()> fct, const bool parallel)
 	if (parallel)
 	{
 		std::lock_guard<std::mutex> guard(workerQueueMX);
-		workerQueue.push_back(Task(fct));
+		workerQueue.emplace_back(fct);
 		workerCV.notify_one();
 	}
 	else
 	{
 		std::lock_guard<std::mutex> guard(mainQueueMX);
-		mainQueue.push_back(Task(fct));
+		mainQueue.emplace_back(fct);
 	}
 }
 
@@ -63,7 +63,7 @@ void Utils::ThreadPool::poolRoutine(int id)
 			// block this thread until worker queue is not empty anymore, unlock if app is not running
 			std::unique_lock<std::mutex> lock(workerQueueMX);
 			workerCV.wait(lock, [&]() -> bool {
-				return running.test() ? !workerQueue.empty() : true;
+				return !running.test() || !workerQueue.empty();
 				});
 
 			continue;
@@ -102,16 +102,12 @@ void Utils::ThreadPool::pollMainQueue()
 bool Utils::ThreadPool::isIdle()
 {
 	if (!workerQueue.empty())
-	{
 		return false;
-	}
-	else
+
+	for (const bool working : workers)
 	{
-		for (const bool working : workers)
-		{
-			if (working)
-				return false;
-		}
+		if (working)
+			return false;
 	}
 
 	return true;
