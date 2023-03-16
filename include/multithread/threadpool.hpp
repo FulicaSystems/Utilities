@@ -79,6 +79,10 @@ namespace Utils
 		 */
 		bool isIdle();
 
+		void launchThreads(const int num = 1);
+
+		void killThreads(const int num = 1);
+
 		/**
 		 * Print the thread id.
 		 * 

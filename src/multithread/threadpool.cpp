@@ -6,12 +6,7 @@
 
 Utils::ThreadPool::ThreadPool(uint nThreads)
 {
-	for (uint i = 0; i < nThreads; ++i)
-	{
-		threads.emplace_back(std::bind(&ThreadPool::poolRoutine, this, i));
-		// the threads are not working yet
-		workers.emplace_back(false);
-	}
+	launchThreads(nThreads);
 
 	running.test_and_set();
 }
@@ -34,9 +29,7 @@ Utils::ThreadPool::~ThreadPool()
 	// finish last main tasks;
 	pollMainQueue();
 
-	workerCV.notify_all();	// wake all workers
-	// jthreads are auto joining
-	threads.clear();
+	killThreads(threads.size());
 }
 
 void Utils::ThreadPool::addTask(std::function<void()> fct, const bool parallel)
@@ -111,6 +104,36 @@ bool Utils::ThreadPool::isIdle()
 	}
 
 	return true;
+}
+
+void Utils::ThreadPool::launchThreads(const int num)
+{
+	int idOffset = threads.size();
+
+	for (int i = 0; i < num; ++i)
+	{
+		threads.emplace_back(std::bind(&ThreadPool::poolRoutine, this, idOffset + i));
+		// the threads are not working yet
+		workers.emplace_back(false);
+	}
+}
+
+void Utils::ThreadPool::killThreads(const int num)
+{
+	if (num >= threads.size())
+	{
+		workerCV.notify_all();	// wake all workers
+		// jthreads are auto joining
+		threads.clear();
+		return;
+	}
+
+	// TODO : think of a way of removing inactive threads
+	//for (int i = 0; i < num; ++i)
+	//{
+	//	threads.pop_back();
+	//	workers.pop_back();
+	//}
 }
 
 void Utils::ThreadPool::printThreadId(int id)
