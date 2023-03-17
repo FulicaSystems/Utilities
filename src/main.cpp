@@ -98,22 +98,22 @@ int main()
 		inputs.resize(2);
 
 		// add hidden layer
-		network.push_back(Layer());
+		network.emplace_back();
 		for (int i = 0; i < 2; ++i)
 		{
 			Layer& thisLayer = *(network.end() - 1);
-			thisLayer.push_back(Perceptron(inputs.size(), ActivationImpl::reLU));
+			thisLayer.emplace_back(inputs.size(), ActivationImpl::reLU);
 		}
 
 		// add output layer
-		network.push_back(Layer());
+		network.emplace_back();
 		for (int i = 0; i < 1; ++i)
 		{
 			// previous layer is before actual layer
 			Layer& previousLayer = *(network.end() - 2);
 			Layer& thisLayer = *(network.end() - 1);
 
-			thisLayer.push_back(Perceptron(previousLayer.size(), ActivationImpl::linear));
+			thisLayer.emplace_back(previousLayer.size(), ActivationImpl::linear);
 
 			// link to previous layer
 			for (int j = 0; j < previousLayer.size(); ++j)
@@ -180,10 +180,10 @@ int main()
 		TrainingSet set3 = { 1.f, 1.f, 0.f };
 
 		std::vector<TrainingSet> sets;
-		sets.push_back(set0);
-		sets.push_back(set1);
-		sets.push_back(set2);
-		sets.push_back(set3);
+		sets.emplace_back(set0);
+		sets.emplace_back(set1);
+		sets.emplace_back(set2);
+		sets.emplace_back(set3);
 
 		for (int i = 0; i < epoch; ++i)
 		{
@@ -193,7 +193,7 @@ int main()
 				std::vector<float> inputs;
 				for (int j = 0; j < inputNum; ++j)
 				{
-					inputs.push_back(set[j]);
+					inputs.emplace_back(set[j]);
 				}
 				model.feedForward(inputs);
 
@@ -205,7 +205,7 @@ int main()
 				std::vector<float> outputs;
 				for (int j = 0; j < outputNum; ++j)
 				{
-					outputs.push_back(set[inputNum + j]);
+					outputs.emplace_back(set[inputNum + j]);
 				}
 				model.processErrorFromTarget(outputs);
 

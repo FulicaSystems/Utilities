@@ -11,17 +11,17 @@ void Utils::AI::NeuralNetwork::MLPModel::addLayer(const int numPerceptron, Activ
 {
 	if (network.empty())
 	{
-		network.push_back(Layer());
+		network.emplace_back();
 		for (int i = 0; i < numPerceptron; ++i)
 		{
 			Layer& thisLayer = *(network.end() - 1);
-			thisLayer.push_back(Perceptron(inputLayerSize, func));
+			thisLayer.emplace_back(inputLayerSize, func);
 		}
 
 		return;
 	}
 
-	network.push_back(Layer());
+	network.emplace_back();
 	// prevent reallocation when pushing back
 	(*(network.end() - 1)).reserve(numPerceptron);
 	for (int i = 0; i < numPerceptron; ++i)
@@ -30,7 +30,7 @@ void Utils::AI::NeuralNetwork::MLPModel::addLayer(const int numPerceptron, Activ
 		Layer& previousLayer = network[network.size() - 2];
 		Layer& thisLayer = network[network.size() - 1];
 
-		thisLayer.push_back(Perceptron(previousLayer.size(), func));
+		thisLayer.emplace_back(previousLayer.size(), func);
 
 		// link to previous layer
 		for (int j = 0; j < previousLayer.size(); ++j)
@@ -69,7 +69,7 @@ std::vector<float> Utils::AI::NeuralNetwork::MLPModel::getOutputs() const
 	std::vector<float> outputs;
 	for (const Perceptron& p : outputLayer)
 	{
-		outputs.push_back(p.output);
+		outputs.emplace_back(p.output);
 	}
 
 	return outputs;
@@ -140,7 +140,7 @@ void Utils::AI::NeuralNetwork::MLPModel::trainFromSet(const int epoch, const Tra
 			std::vector<float> inputs;
 			for (int j = 0; j < inputNum; ++j)
 			{
-				inputs.push_back(sheet[j]);
+				inputs.emplace_back(sheet[j]);
 			}
 			// feed training inputs
 			feedForward(inputs);
@@ -151,7 +151,7 @@ void Utils::AI::NeuralNetwork::MLPModel::trainFromSet(const int epoch, const Tra
 			std::vector<float> outputs;
 			for (int j = 0; j < outputNum; ++j)
 			{
-				outputs.push_back(sheet[inputNum + j]);
+				outputs.emplace_back(sheet[inputNum + j]);
 			}
 			processErrorFromTarget(outputs, !bAfterward);
 

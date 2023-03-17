@@ -22,7 +22,7 @@ float Utils::AI::Perceptron::sum() const
 
 void Utils::AI::Perceptron::addNextPerceptron(Perceptron* nextP)
 {
-	nextPerceptrons.push_back(nextP);
+	nextPerceptrons.emplace_back(nextP);
 }
 
 float Utils::AI::Perceptron::getInputWeight(const int inputIndex) const
