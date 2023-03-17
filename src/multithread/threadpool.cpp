@@ -47,7 +47,7 @@ void Utils::ThreadPool::addTask(std::function<void()> fct, const bool parallel)
 	}
 }
 
-void Utils::ThreadPool::poolRoutine(int id)
+void Utils::ThreadPool::threadLoop(int id)
 {
 	while (running.test())
 	{
@@ -112,7 +112,7 @@ void Utils::ThreadPool::launchThreads(const int num)
 
 	for (int i = 0; i < num; ++i)
 	{
-		threads.emplace_back(std::bind(&ThreadPool::poolRoutine, this, idOffset + i));
+		threads.emplace_back(std::bind(&ThreadPool::threadLoop, this, idOffset + i));
 		// the threads are not working yet
 		workers.emplace_back(false);
 	}

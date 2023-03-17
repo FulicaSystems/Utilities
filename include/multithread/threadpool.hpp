@@ -43,6 +43,25 @@ namespace Utils
 		// is the work routine running?
 		std::atomic_flag			running = ATOMIC_FLAG_INIT;
 
+		/**
+		 * Thread routine.
+		 * 
+		 * @param id
+		 */
+		void threadLoop(int id);
+
+		/**
+		 * Is the pool idling/ready.
+		 */
+		bool isIdle();
+
+		/**
+		 * Print the thread id.
+		 * 
+		 * @param id
+		 */
+		void printThreadId(int id);
+
 	public:
 		/**
 		 * Create the thread pool.
@@ -65,29 +84,10 @@ namespace Utils
 		 */
 		void addTask(std::function<void()> fct, const bool parallel = true);
 
-		/**
-		 * Thread routine.
-		 * 
-		 * @param id
-		 */
-		void poolRoutine(int id);
-
 		void pollMainQueue();
-
-		/**
-		 * Is the pool idling/ready.
-		 */
-		bool isIdle();
 
 		void launchThreads(const int num = 1);
 
 		void killThreads(const int num = 1);
-
-		/**
-		 * Print the thread id.
-		 * 
-		 * @param id
-		 */
-		void printThreadId(int id);
 	};
 }
