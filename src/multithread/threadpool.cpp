@@ -66,6 +66,10 @@ void Utils::ThreadPool::threadLoop(int id)
 		{
 			std::lock_guard<std::mutex> guard(workerQueueMX);
 
+			// task queue may be empty now
+			if (workerQueue.empty())
+				continue;
+
 			t = workerQueue.front();
 			workerQueue.pop_front();
 		}
