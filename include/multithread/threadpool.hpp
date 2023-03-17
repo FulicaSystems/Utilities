@@ -9,6 +9,9 @@
 
 #include "utils/multithread/task.hpp"
 
+// define this macro to create a singleton threadpool
+// #define THREADPOOL_SINGLETON
+
 namespace Utils
 {
 	class ThreadPool
@@ -45,7 +48,7 @@ namespace Utils
 
 		/**
 		 * Thread routine.
-		 * 
+		 *
 		 * @param id
 		 */
 		void threadLoop(int id);
@@ -57,7 +60,7 @@ namespace Utils
 
 		/**
 		 * Print the thread id.
-		 * 
+		 *
 		 * @param id
 		 */
 		void printThreadId(int id);
@@ -66,20 +69,20 @@ namespace Utils
 		/**
 		 * Create the thread pool.
 		 * Specify the number of threads, the number of threads is by default the maximum that the machine can get.
-		 * 
+		 *
 		 * @param nThreads
 		 */
 		ThreadPool(uint nThreads = std::thread::hardware_concurrency());
 
 		/**
 		 * End the thread pool.
-		 * 
+		 *
 		 */
 		~ThreadPool();
 
 		/**
 		 * Add a task to the task queue.
-		 * 
+		 *
 		 * @param fct
 		 */
 		void addTask(std::function<void()> fct, const bool parallel = true);
@@ -90,4 +93,29 @@ namespace Utils
 
 		void killThreads(const int num = 1);
 	};
+
+#ifdef THREADPOOL_SINGLETON
+#include "utils/singleton.hpp"
+
+	class GlobalThreadPool : public Utils::Singleton<GlobalThreadPool>
+	{
+		friend class Singleton<GlobalThreadPool>;
+
+	private:
+		ThreadPool pool;
+
+		GlobalThreadPool() = default;
+
+	public:
+		static void addTask(const std::function<void()>& fct, const bool parallel = true)
+		{
+			getInstance().pool.addTask(fct, parallel);
+		}
+
+		static void pollMainQueue()
+		{
+			getInstance().pool.pollMainQueue();
+		}
+	};
+#endif
 }
