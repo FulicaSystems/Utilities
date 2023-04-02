@@ -55,6 +55,18 @@ static _CrtMemState chklk_diff;
     CHKLK_DIFF_SNAP\
     CHKLK_LEAK_VERBOSE
 
+// exit snap and directly show diff
+// include Windows.h file to print to output log
+#define CHKLK_EXIT_DIFF\
+    CHKLK_EXIT_SNAP\
+    CHKLK_DIFF_SNAP
+
+// exit snap and directly show diff (verbose)
+// include Windows.h file to print to output log
+#define CHKLK_EXIT_DIFF_VERBOSE\
+    CHKLK_EXIT_SNAP\
+    CHKLK_DIFF_VERBOSE
+
 // some memory could be leaked or freed outside of the snapshots take
 // include Windows.h file to print to output log
 #define CHKLK_APP\
