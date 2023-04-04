@@ -6,15 +6,12 @@ namespace Utils
 {
 	/**
 	 * Creating a Singleton class.
-	 * 
+	 *
 	 * @code
 	 * class T : public Singleton<T>
 	 * {
-	 *		friend class Singleton<T>;
-	 * 
-	 * private:
-	 * 		T() = default;
-	 * 
+	 *		SINGLETON(T)
+	 *
 	 * public:
 	 * 		static void foo()
 	 * 		{
@@ -34,8 +31,8 @@ namespace Utils
 
 		/**
 		 * Get the unique instance.
-		 * 
-		 * @return 
+		 *
+		 * @return
 		 */
 		static inline T& getInstance();
 
@@ -68,3 +65,9 @@ inline T& Utils::Singleton<T>::getInstance()
 {
 	return *instance.get();
 }
+
+#define SINGLETON(CLASS)\
+friend class Utils::Singleton<CLASS>;\
+/* Cannot create a singleton derived object (private constructor) */\
+private:\
+CLASS() = default;
