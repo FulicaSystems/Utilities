@@ -11,6 +11,9 @@
 
 // define this macro to create a singleton threadpool
 // #define THREADPOOL_SINGLETON
+#ifdef THREADPOOL_SINGLETON
+#include "utils/singleton.hpp"
+#endif
 
 namespace Utils
 {
@@ -95,16 +98,12 @@ namespace Utils
 	};
 
 #ifdef THREADPOOL_SINGLETON
-#include "utils/singleton.hpp"
-
 	class GlobalThreadPool : public Utils::Singleton<GlobalThreadPool>
 	{
-		friend class Singleton<GlobalThreadPool>;
+		SINGLETON(GlobalThreadPool)
 
 	private:
 		ThreadPool pool;
-
-		GlobalThreadPool() = default;
 
 	public:
 		static void addTask(const std::function<void()>& fct, const bool parallel = true)
