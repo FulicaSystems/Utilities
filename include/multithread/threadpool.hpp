@@ -98,6 +98,7 @@ namespace Utils
 	};
 
 #ifdef THREADPOOL_SINGLETON
+	// TODO : rename to increase readability (Parallel::LaunchTask([](){});)
 	class GlobalThreadPool : public Utils::Singleton<GlobalThreadPool>
 	{
 		SINGLETON(GlobalThreadPool)
