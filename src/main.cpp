@@ -268,7 +268,8 @@ int main()
 				Super::foo(); // A B
 				std::cout << "C" << std::endl;
 
-				Super::Super::foo(); // A
+				// does not compile using g++ (ok with msvc)
+				//Super::Super::foo(); // A
 			}
 		};
 

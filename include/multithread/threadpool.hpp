@@ -4,6 +4,7 @@
 #include <atomic>
 #include <deque>
 #include <mutex>
+#include <condition_variable>
 
 #include "numerics.hpp"
 
