@@ -4,6 +4,7 @@
 #include "utils/checkleak.hpp"
 
 #include "mathematics.hpp"
+#include "mathstream.hpp"
 #include "utils/property.hpp"
 
 #include "utils/ai/perceptron.hpp"
