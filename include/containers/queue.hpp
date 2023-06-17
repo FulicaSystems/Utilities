@@ -33,7 +33,7 @@ namespace Utils
 	private:
 		Node<T>*	head = nullptr;
 		//queue size, number of elements
-		uint		size = 0;
+		unsigned int		size = 0;
 
 	public:
 		/**
@@ -68,7 +68,7 @@ namespace Utils
 		 *
 		 * @return
 		 */
-		uint sizeQueue() const;
+		unsigned int sizeQueue() const;
 	};
 }
 
@@ -171,7 +171,7 @@ bool Utils::Queue<T>::isQueueEmpty()
 }
 
 template<typename T>
-uint Utils::Queue<T>::sizeQueue() const
+unsigned int Utils::Queue<T>::sizeQueue() const
 {
 	return size;
 }

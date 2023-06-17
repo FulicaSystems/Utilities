@@ -4,7 +4,7 @@
 
 #include "utils/multithread/threadpool.hpp"
 
-Utils::ThreadPool::ThreadPool(uint nThreads)
+Utils::ThreadPool::ThreadPool(unsigned int nThreads)
 {
 	launchThreads(nThreads);
 

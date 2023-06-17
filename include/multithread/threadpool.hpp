@@ -76,7 +76,7 @@ namespace Utils
 		 *
 		 * @param nThreads
 		 */
-		ThreadPool(uint nThreads = std::thread::hardware_concurrency());
+		ThreadPool(unsigned int nThreads = std::thread::hardware_concurrency());
 
 		/**
 		 * End the thread pool.
