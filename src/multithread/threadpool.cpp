@@ -87,6 +87,8 @@ void Utils::ThreadPool::threadLoop(int id)
 
 void Utils::ThreadPool::pollMainQueue()
 {
+	// recursive tasks are not possible due to the lock guard
+	// use recursive tasks through other thread
 	std::lock_guard<std::mutex> guard(mainQueueMX);
 
 	while (!mainQueue.empty())

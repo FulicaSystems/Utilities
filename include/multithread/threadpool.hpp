@@ -91,6 +91,9 @@ namespace Utils
 		 */
 		void addTask(std::function<void()> fct, const bool parallel = true);
 
+		/**
+		 * Do every task from main queue. Recursive tasks are not possible
+		 */
 		void pollMainQueue();
 
 		void launchThreads(const int num = 1);
