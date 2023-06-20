@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <cassert>
 
 namespace Utils
 {
@@ -12,15 +13,16 @@ namespace Utils
 		std::function<void(const TType& t)> setAccessor;
 
 	public:
+		Property() = delete;
 		Property(std::function<const TType& ()> get,
 			std::function<void(const TType& t)> set);
 
 		// get accessor
-		const TType& get() const { assert(("Get accessor not set", getAccessor)); return getAccessor(); }
+		const TType& get() const { assert(getAccessor && "Get accessor not set"); return getAccessor(); }
 		operator const TType& () const { return get(); }
 
 		// set accessor
-		void set(const TType& t) { assert(("Set accessor not set", setAccessor)); setAccessor(t); }
+		void set(const TType& t) { assert(setAccessor && "Set accessor not set"); setAccessor(t); }
 		void operator=(const TType& t) { set(t); }
 	};
 }
