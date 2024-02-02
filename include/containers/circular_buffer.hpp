@@ -21,7 +21,18 @@ public:
     }
 
 
-    void addData(const TType& data)
+    bool addData(const TType& data)
+    {
+        if (ptrs.size() >= size)
+            return false;
+        buffer[caret] = data;
+        ptrs.push_back(&buffer[caret]);
+        caret = (caret + 1) % size;
+
+        return true;
+    }
+
+    void addDataForce(const TType& data)
     {
         buffer[caret] = data;
         ptrs.push_back(&buffer[caret]);
