@@ -7,6 +7,9 @@
 
 namespace bin
 {
+	class BinaryFileReader
+	{};
+	
 	static inline std::vector<char> read(const std::filesystem::path& filename)
 	{
 		std::ifstream file(filename, std::ios::ate | std::ios::binary);
