@@ -1,4 +1,4 @@
-#include "utils/containers/rawtext.hpp"
+#include "rawtext.hpp"
 
 Utils::RawText::RawText(const std::string& str)
 	: raw(str)

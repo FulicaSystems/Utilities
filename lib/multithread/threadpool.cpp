@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include "utils/multithread/threadpool.hpp"
+#include "threadpool.hpp"
 
 Utils::ThreadPool::ThreadPool(unsigned int nThreads)
 {

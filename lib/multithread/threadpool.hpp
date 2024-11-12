@@ -6,9 +6,8 @@
 #include <mutex>
 #include <condition_variable>
 
-#include "numerics.hpp"
 
-#include "utils/multithread/task.hpp"
+#include "task.hpp"
 
 // define this macro to create a singleton threadpool
 // #define THREADPOOL_SINGLETON

@@ -1,4 +1,4 @@
-set(component test)
+set(component utilities_test)
 
 add_executable(${component})
 

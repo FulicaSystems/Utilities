@@ -1,6 +1,6 @@
 #include "mathematics.hpp"
 
-#include "utils/ai/activation.hpp"
+#include "activation.hpp"
 
 float Utils::AI::ActivationImpl::threshold(const float x)
 {

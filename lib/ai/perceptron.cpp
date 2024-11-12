@@ -1,4 +1,4 @@
-#include "utils/ai/perceptron.hpp"
+#include "perceptron.hpp"
 
 Utils::AI::Perceptron::Perceptron(int numInput, ActivationPtr func)
 	: func(func)

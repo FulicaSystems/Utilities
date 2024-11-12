@@ -1,4 +1,4 @@
-#include "utils/multithread/task.hpp"
+#include "task.hpp"
 
 #ifdef OLD_TASK
 Utils::Task::Task(std::function<void()> fct)

@@ -1,7 +1,7 @@
 #include <thread>
 #include <chrono>
 
-#include "utils/multithread/spinlock.hpp"
+#include "spinlock.hpp"
 
 void Utils::SpinLock::lock()
 {
