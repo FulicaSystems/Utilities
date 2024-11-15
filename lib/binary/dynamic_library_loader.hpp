@@ -4,6 +4,11 @@
 
 #include <Windows.h>
 
+// declare a function pointer
+#define PFN_DECLARE(prefix, funcName) prefix##funcName funcName
+// load the function from the lib
+#define GET_PROC_ADDR(loaderRef, prefix, funcName) funcName = (prefix##funcName)(loaderRef).getProcAddr(#funcName)
+
 namespace Utils::bin
 {
     class DynamicLibraryLoader
