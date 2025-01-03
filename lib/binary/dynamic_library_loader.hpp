@@ -2,7 +2,10 @@
 
 #include <string>
 
+// TODO : support other platforms
+#ifdef WIN32
 #include <Windows.h>
+#endif
 
 // declare a function pointer
 #define PFN_DECLARE(prefix, funcName) prefix##funcName funcName

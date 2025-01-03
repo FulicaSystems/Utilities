@@ -2,8 +2,6 @@
 
 #include <vector>
 
-#include "mathematics.hpp"
-
 #include "activation.hpp"
 
 namespace Utils::AI

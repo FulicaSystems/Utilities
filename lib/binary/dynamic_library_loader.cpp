@@ -16,6 +16,6 @@ bin::DynamicLibraryLoader::~DynamicLibraryLoader()
 
 void* bin::DynamicLibraryLoader::getProcAddr(const char* proc)
 {
-    void (*addr) = GetProcAddress(m_module, proc);
+    void (*addr) = GetProcAddress((HMODULE)m_module, proc);
     return addr;
 }

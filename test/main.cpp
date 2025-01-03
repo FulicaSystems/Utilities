@@ -1,23 +1,21 @@
 #include <iostream>
 
 #define CHKLK_OVERRIDE_NEW_OP
-#include "utils/checkleak.hpp"
+#include "checkleak.hpp"
 
-#include "mathematics.hpp"
-#include "mathstream.hpp"
-#include "utils/property.hpp"
+#include "property.hpp"
 
-#include "utils/ai/perceptron.hpp"
-#include "utils/ai/activation.hpp"
-#include "utils/ai/neuralnetwork/mlpmodel.hpp"
+#include "ai/perceptron.hpp"
+#include "ai/activation.hpp"
+#include "ai/neuralnetwork/mlpmodel.hpp"
 
 #include <Windows.h>
 
-#include "utils/derived.hpp"
+#include "derived.hpp"
 
-#include "utils/containers/queue.hpp"
+#include "containers/queue.hpp"
 
-#include "utils/multithread/threadpool.hpp"
+#include "multithread/threadpool.hpp"
 
 int main()
 {
