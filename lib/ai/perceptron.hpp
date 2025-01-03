@@ -13,7 +13,9 @@ namespace Utils::AI
 		struct Input
 		{
 			float value = 0.f;
-			float weight = Math::randomf(-0.1f, 0.1f);
+			// TODO : include Mathematics
+			// float weight = Math::randomf(-0.1f, 0.1f);
+			float weight = 0.1f;
 		};
 
 		std::vector<Input> inputs;
