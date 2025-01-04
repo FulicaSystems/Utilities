@@ -7,7 +7,7 @@
 
 #include "ai/perceptron.hpp"
 #include "ai/activation.hpp"
-#include "ai/neuralnetwork/mlpmodel.hpp"
+#include "ai/neural_network/mlpmodel.hpp"
 
 #include <Windows.h>
 
