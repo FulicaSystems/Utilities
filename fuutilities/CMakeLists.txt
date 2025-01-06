@@ -1,12 +1,12 @@
-set(component lib)
+set(component fuutilities)
 
 add_library(${component} INTERFACE "")
-add_library(Utilities ALIAS ${component})
+add_library(FuUtilities ALIAS ${component})
 
-option(BUILD_AI_UTILS "build AI utilities" ON)
-option(BUILD_BINARY_UTILS "build binary utilities" ON)
-option(BUILD_CONTAINERS_UTILS "build containers utilities" ON)
-option(BUILD_MULTITHREAD_UTILS "build multithread utilities" ON)
+option(UTILITIES_BUILD_AI_UTILS "build AI utilities" ON)
+option(UTILITIES_BUILD_BINARY_UTILS "build binary utilities" ON)
+option(UTILITIES_BUILD_CONTAINERS_UTILS "build containers utilities" ON)
+option(UTILITIES_BUILD_MULTITHREAD_UTILS "build multithread utilities" ON)
 
 set_property(TARGET ${component}
     PROPERTY PUBLIC_HEADER
@@ -21,25 +21,25 @@ set_property(TARGET ${component}
 target_include_directories(${component} INTERFACE "${CMAKE_CURRENT_LIST_DIR}")
 target_include_directories(${component} INTERFACE "${CMAKE_CURRENT_LIST_DIR}/..")
 
-if (BUILD_AI_UTILS)
+if (UTILITIES_BUILD_AI_UTILS)
     add_subdirectory(ai)
     target_link_libraries(${component}
-        INTERFACE ai
+    INTERFACE ai
     )
 endif()
-if (BUILD_BINARY_UTILS)
+if (UTILITIES_BUILD_BINARY_UTILS)
     add_subdirectory(binary)
     target_link_libraries(${component}
         INTERFACE binary
     )
 endif()
-if (BUILD_CONTAINERS_UTILS)
+if (UTILITIES_BUILD_CONTAINERS_UTILS)
     add_subdirectory(containers)
     target_link_libraries(${component}
         INTERFACE containers
     )
 endif()
-if (BUILD_MULTITHREAD_UTILS)
+if (UTILITIES_BUILD_MULTITHREAD_UTILS)
     add_subdirectory(multithread)
     target_link_libraries(${component}
         INTERFACE multithread

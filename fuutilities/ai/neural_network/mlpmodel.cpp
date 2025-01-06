@@ -1,6 +1,6 @@
-#include "utils/ai/perceptron.hpp"
+#include "perceptron.hpp"
 
-#include "utils/ai/neuralnetwork/mlpmodel.hpp"
+#include "mlpmodel.hpp"
 
 Utils::AI::NeuralNetwork::MLPModel::MLPModel(const int inputLayerSize)
 	: inputLayerSize(inputLayerSize)

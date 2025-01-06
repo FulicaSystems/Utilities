@@ -1,0 +1,3 @@
+[submodule "dependencies/mathematics"]
+	path = dependencies/mathematics
+	url = https://github.com/FulicaSystems/Mathematics

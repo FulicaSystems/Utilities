@@ -1,0 +1,2 @@
+set(MATHEMATICS_BUILD_TESTS OFF)
+add_subdirectory(mathematics)

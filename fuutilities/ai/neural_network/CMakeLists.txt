@@ -1,22 +1,23 @@
-set(component ai)
+set(component neural_network)
 
 add_library(${component} STATIC "")
 
 set_property(TARGET ${component}
     PROPERTY PUBLIC_HEADER
-    activation.hpp
-    perceptron.hpp
+    dqlmodel.hpp
+    mlpmodel.hpp
 )
 
 target_sources(${component}
     PRIVATE
-    activation.hpp
-    activation.cpp
-    perceptron.hpp
-    perceptron.cpp
+    dqlmodel.hpp
+    mlpmodel.hpp
+    mlpmodel.cpp
 )
 
 target_include_directories(${component} PRIVATE "${CMAKE_CURRENT_LIST_DIR}")
 target_include_directories(${component} PUBLIC "${CMAKE_CURRENT_LIST_DIR}/..")
 
-add_subdirectory(neural_network)
+target_link_libraries(${component}
+    PUBLIC FuMathematics
+)
