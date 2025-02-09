@@ -16,6 +16,7 @@ namespace Time
 	// compute time since application start
 	using App = TimeOrigin<1>;
 
+	// TODO : template for time type (milli, seconds, minutes, ...)
 	class TimeManager
 	{
 	private:
@@ -94,6 +95,7 @@ namespace Time
 		inline double getFrameRate() { return 1.f / m_deltaTime; }
 	};
 
+	// TODO : template for time type (milli, seconds, minutes, ...)
 	static class Measure
 	{
 		/**

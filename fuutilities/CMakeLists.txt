@@ -24,7 +24,7 @@ target_include_directories(${component} INTERFACE "${CMAKE_CURRENT_LIST_DIR}/.."
 if (UTILITIES_BUILD_AI_UTILS)
     add_subdirectory(ai)
     target_link_libraries(${component}
-    INTERFACE ai
+        INTERFACE ai
     )
 endif()
 if (UTILITIES_BUILD_BINARY_UTILS)
