@@ -1,8 +1,20 @@
-# project
+# project and IDE
 [Bb]uild
 [Ii]nstall
 .vs
+.vscode
 out
+*.user
+.idea
+
+# resources and large files
+[Aa]sset
+[Aa]ssets
+*.obj
+*.fbx
+*.png
+*.jpg
+*.spv
 
 # Build results
 [Dd]ebug

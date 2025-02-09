@@ -2,7 +2,7 @@
 
 #include "mlpmodel.hpp"
 
-Utils::AI::NeuralNetwork::MLPModel::MLPModel(const int inputLayerSize)
+Utils::AI::NeuralNetwork::MLPModel::MLPModel(int inputLayerSize)
 	: inputLayerSize(inputLayerSize)
 {
 }

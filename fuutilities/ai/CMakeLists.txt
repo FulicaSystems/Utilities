@@ -23,4 +23,5 @@ add_subdirectory(neural_network)
 
 target_link_libraries(${component}
     PUBLIC FuMathematics
+    PUBLIC neural_network
 )
