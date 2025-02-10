@@ -5,6 +5,14 @@
 
 namespace Utils
 {
+	// TODO : template <unsigned int N> for default accessors
+	// Property<MyType, GET>
+	// Property<MyType, SET>
+	// Property<MyType, GET | SET>
+	// Property<MyType, CUSTOM>
+	// TODO : make default accessors (as macro ?)
+	// Utils::Property<int> p{[this]() -> const int & { return a; }, [this](const int &i) { a = i; }};
+        // Utils::Property<int> p2{[this]() -> const int & { return a; }, nullptr};
 	template<class TType>
 	class Property
 	{
