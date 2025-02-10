@@ -2,21 +2,21 @@
 
 #include "property.hpp"
 
+using namespace Utils;
+
 int main()
 {
+    class Test
     {
-        class Test
-        {
-          private:
-            int a;
+      private:
+        int a = 0;
 
-          public:
-            Utils::Property<int> p{[this]() -> const int & { return a; }, [this](const int &i) { a = i; }};
-            Utils::Property<int> p2{[this]() -> const int & { return a; }, nullptr};
-        };
+      public:
+        Property<int> p{[this]() -> const int & { return a; }, [this](const int &i) { a = i; }};
+        Property<int> p2{[this]() -> const int & { return a; }, nullptr};
+    };
 
-        Test t;
-        std::cout << t.p << std::endl;
-        // t.p2 = 5;
-    }
+    Test t;
+    std::cout << t.p << std::endl;
+    // t.p2 = 5;
 }
