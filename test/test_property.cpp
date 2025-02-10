@@ -2,21 +2,28 @@
 
 #include "property.hpp"
 
+using namespace Utils;
+
 int main()
 {
+    class Test
     {
-        class Test
-        {
-          private:
-            int a;
+      private:
+        int a = 0;
+        int b = 3;
 
-          public:
-            Utils::Property<int> p{[this]() -> const int & { return a; }, [this](const int &i) { a = i; }};
-            Utils::Property<int> p2{[this]() -> const int & { return a; }, nullptr};
-        };
+      public:
+        Property<int, AccessorFlagE::RW> p = a;
+        Property<int, AccessorFlagE::GET> p2 = b;
+    };
 
-        Test t;
-        std::cout << t.p << std::endl;
-        // t.p2 = 5;
-    }
+    Test t;
+
+    std::cout << t.p << std::endl;
+    t.p = 6;
+    std::cout << t.p << std::endl;
+
+    std::cout << t.p2 << std::endl;
+    // t.p2 = 3;
+    std::cout << t.p2 << std::endl;
 }
